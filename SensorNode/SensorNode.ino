@@ -19,13 +19,11 @@ DHT dht(DHTPIN, DHTTYPE);
 #define SCREEN_ADDRESS 0x3C //changed for the copy screens i have
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-//RF Stuff https://github.com/pouriap/TinyRF
 //Actual RF library https://github.com/PaulStoffregen/RadioHead/blob/master/RH_ASK.h
 
 //RH_ASK setup
 #include <RH_ASK.h>
 #ifdef RH_HAVE_HARDWARE_SPI
-#include <SPI.h> // Not actually used but needed to compile
 #endif
 //RH Driver
 //(data rate, recieve pin, transmit pin, 0)
@@ -114,7 +112,7 @@ char formatDataLine(float temp, float humid) {
 
 void sendData(float temp, float humid) {
   //const char *dataLine = "bweh";
-  char *dataLine = "test";
+  char *dataLine = "blah";
   driver.send((uint8_t *)dataLine, strlen(dataLine));
   driver.waitPacketSent();
   delay(500);
