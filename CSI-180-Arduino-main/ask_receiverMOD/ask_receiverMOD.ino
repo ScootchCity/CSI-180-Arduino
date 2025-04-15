@@ -17,9 +17,9 @@ RH_ASK driver(2000, 9, 12, 0); // ESP8266 or ESP32: do not use pin 11 or 2
 
 void setup()
 {
-//#ifdef RH_HAVE_SERIAL
+#ifdef RH_HAVE_SERIAL
     Serial.begin(9600);	  // Debugging only
-//#endif
+#endif
     if (!driver.init())
 #ifdef RH_HAVE_SERIAL
          Serial.println("init failed");
@@ -30,20 +30,29 @@ void setup()
 
 void loop()
 {
-  uint8_t buf[RH_ASK_MAX_MESSAGE_LEN];
+  int8_t buf[RH_ASK_MAX_MESSAGE_LEN];
   uint8_t buflen = sizeof(buf);
 
   if (driver.recv(buf, &buflen)) // Non-blocking
   {
-    int i;
+    int8_t i;
     String str = "";
+    int8_t digit = 0;
+    int8_t decimal;
     
+    /*
     for (int i = 0; i< buflen; i++) {
       str += (char)buf[i];
     }
+    */
+
+    //digit = buf[0];
+    //decimal = buf[1];
+
     // Message with a good checksum received, dump it.
     driver.printBuffer("Got:", buf, buflen);
-    Serial.println("str: ");
-    Serial.println(str);
+    Serial.println("Buf: ");
+    Serial.println(digit);
   }
+  //else {Serial.println("no data");}
 }

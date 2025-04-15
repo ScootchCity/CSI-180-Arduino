@@ -35,12 +35,16 @@ void setup() {
 }
 
 void loop() {
- 
+  //Serial.println();
+  sendData2(32.18);
+  delay(3000);
 }
 
 float getTemp() {return dht.readTemperature();}
 float getHumid() {return dht.readHumidity();}
 
+
+/*
 char formatDataLine(float temp, float humid) {
   char *returnLine = "test";
   //FOR DEBUG
@@ -58,22 +62,28 @@ void sendData(float temp, float humid) {
   Serial.println("sent...");
   Serial.println(dataLine);
 }
+*/
 
 //https://www.airspayce.com/mikem/arduino/RadioHead/classRH__ASK.html#a5cf896776548ec88b13a880d2e1f65ba
 const uint8_t DATA_ARRAY_LENGTH = 2;
 
 void sendData2(const float in) {
-  int8_t digit = 0, decimal = 0;
+  int8_t digit = 0; 
+  int8_t decimal = 0;
   int8_t *dataLine;
+  formatData(in, digit, decimal);
   dataLine[0] = digit;
   dataLine[1] = decimal;
-  formatData(in, digit, decimal);
   driver.send(dataLine, DATA_ARRAY_LENGTH);
   driver.waitPacketSent();
   //FOR DEBUG
   Serial.println("sent...");
   Serial.println(dataLine[0]);
   Serial.println(dataLine[1]);
+  Serial.println("dataline...");
+  for (int i = 0; i < DATA_ARRAY_LENGTH; i++) {
+    Serial.println(dataLine[i]);
+  }
 }
 
 void formatData(const float in, int8_t& digit, int8_t& decimal) {
